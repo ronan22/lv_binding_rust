@@ -77,7 +77,6 @@ unsafe_no_autoinit = []
 quote = "1.0.23"
 proc-macro2 = "1.0.51"
 lvgl-codegen = { version = "0.6.2", path = "../lvgl-codegen" }
-lvgl-sys = { version = "0.6.2", path = "../lvgl-sys" }
 
 [dev-dependencies]
 embedded-graphics-simulator = "0.5.0"

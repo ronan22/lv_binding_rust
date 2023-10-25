@@ -5,14 +5,31 @@ use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::PathBuf;
+use std::thread::sleep;
+use std::time::Duration;
+use std::fs;
 
 fn main() {
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     let rs = out_path.join("generated.rs");
+    let input_path = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../lvgl-sys/bindings.rs"));
 
-    let widgets_impl = lvgl_sys::_bindgen_raw_src();
+    let mut count = 0u32;
+    println!("cargo:warning=Waiting the creation of {} ...",input_path.display());
+    loop {
+        count += 1;
+        if input_path.exists() {
+            println!("cargo:warning=The file {} exist now",input_path.display());
+            break
+        }
+        else {
+            println!("cargo:warning=Waiting the creation of {} since {}",input_path.display(), count);
+            sleep(Duration::from_secs(1));
+        }
+    }
+    let widgets_impl = fs::read_to_string(input_path.as_path()).expect("The file bindings.rs should be readable");
 
-    let codegen = CodeGen::from(widgets_impl).unwrap();
+    let codegen = CodeGen::from(widgets_impl.as_str()).unwrap();
     let widgets_impl: Vec<TokenStream> = codegen
         .get_widgets()
         .iter()

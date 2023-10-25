@@ -212,7 +212,6 @@ fn main() {
         .collect(),
     );
 
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     let bindings =
         bindgen::Builder::default().header(shims_dir.join("lvgl_sys.h").to_str().unwrap());
     let bindings = add_font_headers(bindings, &font_extra_src);
@@ -234,7 +233,7 @@ fn main() {
         .expect("Unable to generate bindings");
 
     bindings
-        .write_to_file(out_path.join("bindings.rs"))
+        .write_to_file("bindings.rs")
         .expect("Can't write bindings!");
 
     #[cfg(feature = "drivers")]

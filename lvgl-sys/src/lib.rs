@@ -5,11 +5,7 @@
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::redundant_static_lifetimes)]
 
-include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
-
-pub fn _bindgen_raw_src() -> &'static str {
-    include_str!(concat!(env!("OUT_DIR"), "/bindings.rs"))
-}
+include!("../bindings.rs");
 
 mod string_impl;
 
